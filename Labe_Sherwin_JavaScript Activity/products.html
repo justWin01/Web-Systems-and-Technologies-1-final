@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products - SCL</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/products.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">SCL Computer Parts</div>
+      <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="products.html" class="active">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+      </nav>
+      <div class="search-container">
+        <input type="text" placeholder="Search products..." id="search-input">
+        <button id="search-btn">Search</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="featured">
+    <h2>Our Products</h2>
+    <div class="cart-count-box">Cart Items: <span id="cart-count">0</span></div>
+    <div id="product-grid" class="product-grid"></div>
+  </section>
+
+  <!-- Modal -->
+  <div id="product-modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="close-modal" class="close-btn">&times;</span>
+      <img id="modal-img" src="" alt="Product Image">
+      <h2 id="modal-title"></h2>
+      <p id="modal-price"></p>
+      <p id="modal-desc"></p>
+      <button id="modal-add" class="btn add">Add to Cart</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    &copy; 2025 SCL Computer Store & Accessories
+  </footer>
+
+  <script src="js/products.js"></script>
+</body>
+</html>
