@@ -1,70 +1,79 @@
-// Render cart items
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+const cartContainer = document.getElementById("cart-items");
+const totalPriceBox = document.getElementById("total-price");
+
+// SAVE CART
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// SWEET ALERT (SUCCESS / INFO)
+function showAlert(message, icon = "success") {
+  Swal.fire({
+    icon: icon,
+    title: message,
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+  });
+}
+
+// REMOVE ITEM WITH CONFIRMATION
+function removeItem(id) {
+  Swal.fire({
+    title: "Remove item?",
+    text: "This item will be removed from your cart.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, remove it",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#d33"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      cart = cart.filter(item => item.id !== id);
+      saveCart();
+      renderCart();
+      showAlert("Item removed", "success");
+    }
+  });
+}
+
+// RENDER CART
 function renderCart() {
-  const cartContainer = document.getElementById("cart-items");
-  const totalPriceEl = document.getElementById("total-price");
   cartContainer.innerHTML = "";
+
+  if (cart.length === 0) {
+    cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+    totalPriceBox.textContent = "";
+    return;
+  }
 
   let total = 0;
 
   cart.forEach(item => {
     total += item.price * item.qty;
 
-    const itemDiv = document.createElement("div");
-    itemDiv.classList.add("cart-item");
-    itemDiv.innerHTML = `
+    const div = document.createElement("div");
+    div.classList.add("cart-item");
+    div.innerHTML = `
       <img src="${item.img}" alt="${item.name}">
-      <div class="item-details">
-        <h4>${item.name}</h4>
-        <p>₱${item.price.toLocaleString()}</p>
-        <div class="qty-controls">
-          <button class="decrease" data-id="${item.id}">-</button>
-          <span>${item.qty}</span>
-          <button class="increase" data-id="${item.id}">+</button>
-        </div>
-        <button class="remove" data-id="${item.id}">Remove</button>
-      </div>
+      <h3>${item.name}</h3>
+      <p>Price: ₱${item.price.toLocaleString()}</p>
+      <p>Quantity: ${item.qty}</p>
+      <button class="remove-btn" data-id="${item.id}">Remove</button>
     `;
-    cartContainer.appendChild(itemDiv);
+    cartContainer.appendChild(div);
   });
 
-  totalPriceEl.textContent = `Total: ₱${total.toLocaleString()}`;
+  totalPriceBox.textContent = "Total: ₱" + total.toLocaleString();
 
-  // Event listeners
-  document.querySelectorAll(".increase").forEach(btn =>
-    btn.addEventListener("click", () => {
-      const id = +btn.dataset.id;
-      const product = cart.find(i => i.id === id);
-      product.qty++;
-      saveCart();
-      renderCart();
-    })
-  );
-
-  document.querySelectorAll(".decrease").forEach(btn =>
-    btn.addEventListener("click", () => {
-      const id = +btn.dataset.id;
-      const product = cart.find(i => i.id === id);
-      if (product.qty > 1) {
-        product.qty--;
-      } else {
-        cart = cart.filter(i => i.id !== id);
-      }
-      saveCart();
-      renderCart();
-    })
-  );
-
-  document.querySelectorAll(".remove").forEach(btn =>
-    btn.addEventListener("click", () => {
-      const id = +btn.dataset.id;
-      cart = cart.filter(i => i.id !== id);
-      saveCart();
-      renderCart();
-      showAlert("Item removed");
-    })
+  document.querySelectorAll(".remove-btn").forEach(btn =>
+    btn.addEventListener("click", () => removeItem(+btn.dataset.id))
   );
 }
 
-// Call renderCart on page load
+// INIT
 renderCart();
-updateCartCounter();

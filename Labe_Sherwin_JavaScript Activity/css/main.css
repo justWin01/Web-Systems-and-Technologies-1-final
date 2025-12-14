@@ -8,8 +8,7 @@
   
   /* Body */
   body {
-    background-color: #f4f9ff;
-    color: #002b36;
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -305,6 +304,7 @@
     position: sticky;
     top: 0;
   }
+  
   @media (prefers-color-scheme: dark) {
     body {
     background-color: #121212;

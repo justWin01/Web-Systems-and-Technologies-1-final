@@ -1,4 +1,4 @@
-// Product data
+// PRODUCT DATA
 const products = [
   { id: 1, name: "Intel Core i7 Ultra Processor", price: 39974, img: "image/Intel Core i7 Ultra Processor.png", desc: "High-performance CPU suitable for gaming and productivity." },
   { id: 2, name: "AMD Radeon RX 7000", price: 28500, img: "image/AMD Radeon RX 7000.png", desc: "Next-gen graphics card offering excellent 4K performance." },
@@ -8,14 +8,14 @@ const products = [
   { id: 6, name: "Wireless Gaming Mouse", price: 1500, img: "image/Wireless Gaming Mouse.png", desc: "Lightweight mouse with precise tracking and long battery life." }
 ];
 
-// Cart stored in localStorage
+// CART
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// DOM Elements
+// ELEMENTS
 const grid = document.getElementById("product-grid");
 const cartCount = document.getElementById("cart-count");
 
-// Modal elements
+// MODAL ELEMENTS
 const modal = document.getElementById("product-modal");
 const modalImg = document.getElementById("modal-img");
 const modalTitle = document.getElementById("modal-title");
@@ -24,18 +24,18 @@ const modalDesc = document.getElementById("modal-desc");
 const modalAddBtn = document.getElementById("modal-add");
 const closeModalBtn = document.getElementById("close-modal");
 
-// Update cart counter
+// UPDATE CART COUNTER
 function updateCartCounter() {
   cartCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
 }
 
-// Save cart to localStorage
+// SAVE CART
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCounter();
 }
 
-// SweetAlert for feedback
+// SWEET ALERT (GLOBAL)
 function showAlert(message) {
   Swal.fire({
     icon: "success",
@@ -48,7 +48,7 @@ function showAlert(message) {
   });
 }
 
-// Add item to cart
+// ADD TO CART
 function addToCart(id) {
   const product = products.find(p => p.id === id);
   const exists = cart.find(item => item.id === id);
@@ -63,7 +63,7 @@ function addToCart(id) {
   showAlert("Added to Cart");
 }
 
-// Open product modal
+// OPEN MODAL
 function openModal(id) {
   const product = products.find(p => p.id === id);
   modalImg.src = product.img;
@@ -74,13 +74,13 @@ function openModal(id) {
   modal.classList.remove("hidden");
 }
 
-// Close modal
+// CLOSE MODAL
 closeModalBtn.addEventListener("click", () => modal.classList.add("hidden"));
 modal.addEventListener("click", e => {
   if (e.target === modal) modal.classList.add("hidden");
 });
 
-// Render products on the page
+// RENDER PRODUCTS
 function renderProducts() {
   grid.innerHTML = "";
 
@@ -99,7 +99,7 @@ function renderProducts() {
     grid.appendChild(card);
   });
 
-  // Event listeners for buttons
+  // EVENT LISTENERS
   document.querySelectorAll(".add")
     .forEach(btn => btn.addEventListener("click", () => addToCart(+btn.dataset.id)));
 
@@ -107,12 +107,12 @@ function renderProducts() {
     .forEach(btn => btn.addEventListener("click", () => openModal(+btn.dataset.id)));
 }
 
-// Add to cart from modal
+// ADD TO CART FROM MODAL
 modalAddBtn.addEventListener("click", () => {
   addToCart(+modalAddBtn.dataset.id);
   modal.classList.add("hidden");
 });
 
-// Initialize
+// INIT
 renderProducts();
 updateCartCounter();

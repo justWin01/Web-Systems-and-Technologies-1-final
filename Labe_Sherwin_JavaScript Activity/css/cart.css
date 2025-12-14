@@ -47,28 +47,7 @@
     margin-top: 25px;
     color: #66ccff;
   }
-  /* Centered Alert */
-.alert-modal {
-    position: fixed;
-    top: 40%; /* slightly above center */
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    background-color: #e74c3c; /* red for removal */
-    color: white;
-    padding: 20px 35px;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 16px;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.4s ease;
-  }
-  
-  .alert-modal.show {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
+ 
   
   @media (prefers-color-scheme: dark) {
     body {
