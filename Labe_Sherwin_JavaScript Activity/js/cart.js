@@ -1,46 +1,61 @@
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
 const cartContainer = document.getElementById("cart-items");
 const totalPriceBox = document.getElementById("total-price");
 
-function removeItem(id) {
-  cart = cart.filter(item => item.id !== id);
-  saveCart();
-  renderCart();
-}
-
+// SAVE CART
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-function showAlert(message, color = "#28a745") { // green by default
-    const alertBox = document.createElement("div");
-    alertBox.className = "alert-modal";
-    alertBox.textContent = message;
-    alertBox.style.backgroundColor = color; // set color dynamically
-    document.body.appendChild(alertBox);
-  
-    // Trigger animation
-    setTimeout(() => alertBox.classList.add("show"), 50);
-  
-    // Remove after 1.2 seconds
-    setTimeout(() => {
-      alertBox.classList.remove("show");
-      setTimeout(() => alertBox.remove(), 400);
-    }, 1200);
-  }
+// SWEET ALERT (SUCCESS / INFO)
+function showAlert(message, icon = "success") {
+  Swal.fire({
+    icon: icon,
+    title: message,
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+  });
+}
 
-  
+// REMOVE ITEM WITH CONFIRMATION
+function removeItem(id) {
+  Swal.fire({
+    title: "Remove item?",
+    text: "This item will be removed from your cart.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, remove it",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#d33"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      cart = cart.filter(item => item.id !== id);
+      saveCart();
+      renderCart();
+      showAlert("Item removed", "success");
+    }
+  });
+}
 
+// RENDER CART
 function renderCart() {
   cartContainer.innerHTML = "";
-  if(cart.length === 0){
+
+  if (cart.length === 0) {
     cartContainer.innerHTML = "<p>Your cart is empty.</p>";
     totalPriceBox.textContent = "";
     return;
   }
+
   let total = 0;
+
   cart.forEach(item => {
     total += item.price * item.qty;
+
     const div = document.createElement("div");
     div.classList.add("cart-item");
     div.innerHTML = `
@@ -55,7 +70,10 @@ function renderCart() {
 
   totalPriceBox.textContent = "Total: ₱" + total.toLocaleString();
 
-  document.querySelectorAll(".remove-btn").forEach(btn => btn.addEventListener("click", () => removeItem(+btn.dataset.id)));
+  document.querySelectorAll(".remove-btn").forEach(btn =>
+    btn.addEventListener("click", () => removeItem(+btn.dataset.id))
+  );
 }
 
+// INIT
 renderCart();
